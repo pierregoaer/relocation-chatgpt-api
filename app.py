@@ -19,16 +19,28 @@ def index():
         return response
     if request.method == "POST":
         form_data = request.get_json()
+        location = form_data['location']
+        language = form_data['language']
+        affordability = form_data['affordability'] if form_data['affordability'] else "doesn't matter"
+        weather = form_data['weather'] if form_data['weather'] else "doesn't matter"
+        work_life_balance = form_data['workLifeBalance'] if form_data['workLifeBalance'] else "doesn't matter"
+        proximity_to_nature = form_data['proximityToNature'] if form_data['proximityToNature'] else "doesn't matter"
+        anything_else = form_data['anythingElse']
         print(form_data)
 
         query_content = f"I want to move to a new city." \
                         f" Here are the things that matter to me:" \
-                        f" country: {form_data['country']}," \
-                        f" affordability: {form_data['affordability']}," \
-                        f" weather: {form_data['weather']}," \
-                        f" work-life balance: {form_data['workLifeBalance']}," \
-                        f" proximity to nature: {form_data['proximityToNature']}." \
-                        f"Where should I go? Make a short answer."
+                        f" location: {location}," \
+                        f" language: {language}," \
+                        f" affordability: {affordability}," \
+                        f" weather: {weather}," \
+                        f" work-life balance: {work_life_balance}," \
+                        f" proximity to nature: {proximity_to_nature}," \
+                        f" additional info: {anything_else}." \
+                        f"Write the answer like a JSON object, like this:" \
+                        f"City:[insert city name here]," \
+                        f"Country: [insert country name here]," \
+                        f"Reason : [insert short reason here]"
         chat_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo",
                                                        messages=[{"role": "user", "content": query_content}])
         print(chat_completion)
